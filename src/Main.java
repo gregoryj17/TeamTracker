@@ -75,6 +75,8 @@ public class Main {
 			weight_rand_branch(games, teams);
 		}
 
+		//rec_branch(games, teams);
+
 		for(Team t : rankings){
 			System.out.println(t.getName()+" "+Arrays.toString(t.rank));
 		}
@@ -82,7 +84,7 @@ public class Main {
 	}
 
 	public static void weight_rand_branch(LinkedList<String> games, Hashtable<String, Team> teamss){
-		LinkedList<String> games_copy = (LinkedList<String>) games	.clone();
+		LinkedList<String> games_copy = (LinkedList<String>) games.clone();
 
 		Hashtable<String, Team> teams_copy = new Hashtable<>();
 		for(String t : teamss.keySet()){
@@ -123,7 +125,7 @@ public class Main {
 	}
 
 	public static void rand_branch(LinkedList<String> games, Hashtable<String, Team> teamss){
-		LinkedList<String> games_copy = (LinkedList<String>) games	.clone();
+		LinkedList<String> games_copy = (LinkedList<String>) games.clone();
 
 		Hashtable<String, Team> teams_copy = new Hashtable<>();
 		for(String t : teamss.keySet()){
@@ -160,26 +162,28 @@ public class Main {
 
 	public static void rec_branch(LinkedList<String> games, Hashtable<String, Team> teamss){
 		if(games.isEmpty()){
-			LinkedList<Team> rankings = new LinkedList<Team>();
+			ArrayList<Team> rankings = new ArrayList<Team>();
 			for(String t : teamss.keySet()){
 				rankings.add(teamss.get(t).clone());
 			}
 			rankings.sort(new TeamComparator<>());
 			for(int i=0; i<rankings.size(); i++){
-				String t = rankings.poll().getName();
+				String t = rankings.get(i).getName();
 				teams.get(t).rank[i]++;
 			}
-			if(it%10000==0)System.out.println("Iteration "+it+" complete.");
+			if(it%200000==0){
+				System.out.println("Iteration "+it+" complete.");
+			}
 			it++;
 			return;
 		}
 
-		LinkedList<String> games_copy = (LinkedList<String>) games	.clone();
+		LinkedList<String> games_copy = (LinkedList<String>) games.clone();
 		String[] game = games_copy.poll().split(" ");
 		for(int[] i : scores){
 			Hashtable<String, Team> teams_copy = new Hashtable<>();
 			for(String t : teamss.keySet()){
-				teams_copy.put(t,teamss.get(t));
+				teams_copy.put(t,teamss.get(t).clone());
 			}
 
 			Team team1 = teams_copy.get(game[0]);
