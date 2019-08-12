@@ -1,0 +1,1 @@
+This is a program to track standings in a league based on being fed results from the games played. It is currently loaded with data from 2019 Overwatch League.
